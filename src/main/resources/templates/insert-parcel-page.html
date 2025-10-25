@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <h2 th:text = "${title}"></h2>
+    <nav>
+        <li><a th:href="@{/driver/show/all}">Show All Drivers!!!</a></li>
+        <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
+        <li><a th:href="@{/parcel/calculate/count/today}">Parcels That Need To Be Delivered Today</a></li>
+        </ul>
+
+    </nav>
+    <h2 th:text = "${mytitle}"></h2>
+    <h1>Complete Parcel Form!</h1>
+    <form action="#" th:action="@{'/parcel/add/' + ${customerCode} + '/' + ${driverId}}" th:object="${parcel}" th:method="post">
+        <table>
+            <tr>
+                <td>Is it fragile?</td>
+                <td> <input type="checkbox" th:field="*{isFragile}"  />  </td>
+                <td th:if="${#fields.hasErrors('isFragile')}" th:errors="*{isFragile}"  ></td>
+            </tr>
+            <tr>
+                <td>Size</td>
+                <td>
+                    <select id="size" name="size">
+                        <option th:each="size : ${T(lv.venta.model.Size).values()}" th:value="${size}" th:text="${size}"></option>
+                    </select>
+                </td>
+                <td th:if="${#fields.hasErrors('size')}" th:errors="*{size}"  ></td>
+            </tr>
+            <tr>
+                <td>Deliver after (days)</td>
+                <td> <input type="number" th:field="*{dliveryTime}"  />  </td>
+                <td th:if="${#fields.hasErrors('dliveryTime')}" th:errors="*{dliveryTime}"  ></td>
+            </tr>
+            <tr>
+                <td> <input type="submit" title="Submit" />  </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

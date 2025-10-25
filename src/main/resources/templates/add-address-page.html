@@ -1,0 +1,42 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <h2 th:text = "${title}"></h2>
+    <nav>
+        <ul>
+            <li><a th:href="@{/driver/show/all}">Show All Drivers</a></li>
+            <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
+            <li><a th:href="@{/parcel/calculate/count/today}">Parcels That Need To Be Delivered Today</a></li>
+        </ul>
+    </nav>
+    <h2 th:text = "${title}"></h2>
+    <form action="#" th:action="@{'/customer/add/address?customerId=' + ${customerId}}" th:object="${address}" th:method="post">   <table>
+        <tr>
+            <select id="idc" name="city">
+                <option th:each="city : ${T(lv.venta.model.City).values()}" th:value="${city}" th:text="${city}"></option>
+            </select>
+        </tr>
+
+        <tr>
+            <td>House No</td>
+            <td> <input type="text" th:field="*{houseNo}"  />  </td>
+            <td th:if="${#fields.hasErrors('houseNo')}" th:errors="*{houseNo}"  ></td>
+        </tr>
+
+        <tr>
+            <td>Street or house name</td>
+            <td> <input type="text" th:field="*{streetHouseTitle}"  />  </td>
+            <td th:if="${#fields.hasErrors('streetHouseTitle')}" th:errors="*{streetHouseTitle}"  ></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td> <input type="submit" title="Submit" />  </td>
+        </tr>
+    </table>
+
+    </form>
+
+</body>
+
+</html>

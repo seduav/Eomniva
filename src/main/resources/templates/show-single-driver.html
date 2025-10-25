@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Parcels</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h2 th:text = "${title}"></h2>
+    <nav>
+        <ul>
+            <li><a th:href="@{/driver/show/all}">Show All Drivers</a></li>
+            <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
+            <li><a th:href="@{/customer/create/person}">Create Customer as Person</a></li>
+            <li><a th:href="@{/customer/create/company}">Create Customer as Company</a></li>
+            <form th:action="@{'/customer/add/address'}" method="get">
+                <td>
+                    <select id="customerId" name="customerId">
+                        <label>Select Customer:</label>
+                        <option th:each="customerId : ${customerId}"
+                                th:value="${customerId}"
+                                th:text="${customerId}"></option>
+                    </select>
+                </td>
+                <input type="submit" value="add address for this customer">
+            </form>
+            <form th:action="@{'/driver/show'}" method="GET">
+                <input name="id" placeholder="Search by id">
+                <button type="submit">Search</button>
+            </form>
+
+        </ul>
+    </nav>
+    <h2 th:text = "${mytitle}"></h2>
+    <table>
+        <tr>
+            <td>IDP</td>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Personal Code</td>
+            <td>Car License No</td>
+            <td>Experience (years)</td>
+        </tr>
+        <tr>
+            <td th:text = "${myobj.getIdp()}"></td>
+            <td th:text = "${myobj.getName()}"></td>
+            <td th:text = "${myobj.getSurname()}"></td>
+            <td th:text = "${myobj.getPersonCode()}"></td>
+            <td th:text = "${myobj.getLicenseNo()}"></td>
+            <td th:text = "${myobj.getExperienceInYears()}"></td>
+        </tr>
+    </table>
+    <a th:href="@{/driver/add}"  target="_self">Create new</a>
+</body>
+
+</html>

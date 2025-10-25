@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Parcels</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" th:text="${title}"></a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/parcel/show/all}">Show All Parcels</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/customer/create/person}">Create Customer as Person</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/customer/create/company}">Create Customer as Company</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h2 class="mt-4" th:text="${mytitle}"></h2>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <form th:action="@{'/customer/add/address'}" method="get" class="form-inline">
+                <label class="mr-2">Select Customer:</label>
+                <select id="customerId" name="customerId" class="form-control mr-2">
+                    <option th:each="customerId : ${customerId}"
+                            th:value="${customerId}"
+                            th:text="${customerId}"></option>
+                </select>
+                <input type="submit" class="btn btn-primary" value="Add Address">
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <form th:action="@{'/driver/show'}" method="GET" class="form-inline">
+                <input name="id" placeholder="Search by ID" class="form-control mr-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <form action="/parcel/calculate/income" method="get" class="form-inline">
+                <label class="mr-2">Select Customer:</label>
+                <select name="customerId" class="form-control mr-2">
+                    <option th:each="customerId : ${customerId}"
+                            th:value="${customerId}"
+                            th:text="${customerId}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary">Calculate Income</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <table class="table table-bordered">F
+        <thead class="thead-light">
+        <tr>
+            <th>IDP</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Personal Code</th>
+            <th>Drivers License Number</th>
+            <th>Experience (Years)</th>
+            <th>Update</th>
+            <th class="bg-danger text-white">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tempPr: ${myobjs}">
+            <td th:text="${tempPr.getIdp()}"></td>
+            <td th:text="${tempPr.getName()}"></td>
+            <td th:text="${tempPr.getSurname()}"></td>
+            <td th:text="${tempPr.getPersonCode()}"></td>
+            <td th:text="${tempPr.getLicenseNo()}"></td>
+            <td th:text="${tempPr.getExperienceInYears()}"></td>
+            <td>
+                <a class="btn btn-warning btn-sm" th:href="@{'/driver/update/' + ${tempPr.idp}}" target="_self">Update</a>
+            </td>
+            <td>
+                <a class="btn btn-danger btn-sm" th:href="@{'/driver/remove/' + ${tempPr.idp}}" target="_self">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-success" th:href="@{/driver/add}" target="_self">Make New Driver</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

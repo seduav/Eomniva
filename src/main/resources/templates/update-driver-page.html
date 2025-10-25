@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <h2 th:text = "${title}"></h2>
+    <nav>
+        <ul>
+            <li><a th:href="@{/driver/show/all}">Show All Drivers</a></li>
+            <li><a th:href="@{/driver/show/all/{id}(id=${id})}">Show Driver by ID</a></li>
+        </ul>
+
+    </nav>
+    <h1>Complete Driver Form!</h1>
+    <form action="#" th:action="@{'/driver/update/' + ${id}}" th:object="${driver}" th:method="post">
+        <table>
+            <tr>
+                <td>Name</td>
+                <td> <input type="text" th:field="*{name}"  />  </td>
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  ></td>
+            </tr>
+
+            <tr>
+                <td>Surname</td>
+                <td> <input type="text" th:field="*{surname}"  />  </td>
+                <td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"  ></td>
+            </tr>
+
+            <tr>
+                <td>Personal Code</td>
+                <td> <input type="text" th:field="*{personCode}"  />  </td>
+                <td th:if="${#fields.hasErrors('personCode')}" th:errors="*{personCode}"  ></td>
+            </tr>
+
+            <tr>
+                <td>Car License No</td>
+                <td> <input type="text" th:field="*{licenseNo}"  />  </td>
+                <td th:if="${#fields.hasErrors('licenseNo')}" th:errors="*{licenseNo}"  ></td>
+            </tr>
+
+            <tr>
+                <td>Experience (years)</td>
+                <td> <input type="text" th:field="*{experienceInYears}"  />  </td>
+                <td th:if="${#fields.hasErrors('experienceInYears')}" th:errors="*{experienceInYears}"  ></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td> <input type="submit" title="Submit" />  </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

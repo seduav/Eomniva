@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Parcels</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-4" th:text="${title}"></h2>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/driver/show/all}">Show All Drivers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/parcel/show/all}">Show All Parcels</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/customer/create/person}">Create Customer as Person</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/customer/create/company}">Create Customer as Company</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form th:action="@{'/customer/add/address'}" method="get" class="form-group">
+                    <label class="mr-2">Select Customer:</label>
+                    <select id="customerId" name="customerId" class="form-control mb-2">
+                        <option th:each="customerId : ${customerId}" th:value="${customerId}" th:text="${customerId}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Add Address</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <form th:action="@{'/parcel/show/customer'}" method="GET" class="form-group">
+                    <label class="mr-2">Type Customer Id for which to search for</label>
+                    <input name="id" placeholder="Search by Customer ID" class="form-control mb-2" required>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form th:action="@{'/parcel/show/driver'}" method="GET" class="form-group">
+                    <label class="mr-2">Type Driver Id for which to search for</label>
+                    <input name="id" placeholder="Search by Driver ID" class="form-control mb-2" required>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <form th:action="@{'/parcel/show/price'}" method="GET" class="form-group">
+                    <label class="mr-2">Select max treshold for price</label>
+                    <input type="number" name="price" min="0" max="100" step="0.2" value="0.01" class="form-control mb-2" placeholder="Enter Price" required>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form action="/parcel/show/city" method="get" class="form-group">
+                    <label class="mr-2">Select City:</label>
+                    <select id="idc" name="city" class="form-control mb-2">
+                        <option th:value="${currCity}" th:text="${currCity} + ' (Current)'"></option>
+                        <option th:each="city : ${T(lv.venta.model.City).values()}" th:value="${city}" th:text="${city}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Show Parcels</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <form action="/parcel/calculate/income" method="get" class="form-group">
+                    <label class="mr-2">Select Customer:</label>
+                    <select name="customerId" class="form-control mb-2">
+                        <option th:each="customerId : ${customerId}" th:value="${customerId}" th:text="${customerId}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Calculate Income</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <li class="list-group-item bg-warning text-dark">
+        <a th:href="@{/parcel/calculate/count/today}" class="text-dark">Show All Parcels that need to be delivered TODAY</a>
+    </li>
+
+    <h2 class="mt-4" th:text="${title}"></h2>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>IDPA</th>
+            <th>IDC</th>
+            <th>DRIVER_ID</th>
+            <th>IS FRAGILE</th>
+            <th>PRICE (EUR)</th>
+            <th>SIZE</th>
+            <th>Created At</th>
+            <th>Planned Delivery</th>
+            <th>Assigned Driver</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tempPr : ${myobjs}">
+            <td th:text="${tempPr.getIdpa()}"></td>
+            <td th:text="${tempPr.getAbstractCustomer().getIdc}"></td>
+            <td th:text="${tempPr.getDriver().getIdp()}"></td>
+            <td th:text="${tempPr.getIsFragile()}"></td>
+            <td th:text="${tempPr.getPrice()}"></td>
+            <td th:text="${tempPr.getSize()}"></td>
+            <td th:text="${tempPr.getOrderCreated()}"></td>
+            <td th:text="${tempPr.getPlannedDelivery()}"></td>
+            <td>
+                <form th:action="@{'/parcel/change/' + ${tempPr.getIdpa()}}" method="get">
+                    <select id="driver" name="driverId" class="form-control">
+                        <option th:value="${tempPr.getDriver().getIdp()}"
+                                th:text="${tempPr.getDriver().getName()} + ' (Current)'"></option>
+                        <option th:each="driver : ${driver}"
+                                th:value="${driver.getIdp()}"
+                                th:text="${driver.getName()}"></option>
+                    </select>
+                    <input type="submit" class="btn btn-warning btn-sm mt-2" value="Change Driver">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{'/parcel/add'}" method="get" class="mb-4">
+        <h2>Insert Parcel for Customer and Driver</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="customerCode">Select Customer:</label>
+                <select id="customerCode" name="customerCode" class="form-control">
+                    <option th:each="customer : ${customer}" th:value="${customer}" th:text="${customer}"></option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label >Select Driver:</label>
+                <select id="driver1" name="driverId" class="form-control">
+                    <option th:each="driver : ${driver}" th:value="${driver.getIdp()}" th:text="${driver.getIdp()}"></option>
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-success" value="Insert Parcel">
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
